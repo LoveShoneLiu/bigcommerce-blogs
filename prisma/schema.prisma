@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Store {
+  id            String    @id @default(cuid())
+  storeHash     String    @unique
+  accessToken   String
+  scope         String
+  ownerEmail    String?
+  installedAt   DateTime  @default(now())
+  uninstalledAt DateTime?
+  profile       StorefrontProfile?
+  settings      StoreSettings?
+  scripts       InstalledScript[]
+
+  @@map("stores")
+}
+
+model StorefrontProfile {
+  id                String   @id @default(cuid())
+  storeHash         String   @unique
+  store             Store    @relation(fields: [storeHash], references: [storeHash], onDelete: Cascade)
+  stencilEnabled    Boolean
+  capability        String
+  capabilityReason  String
+  channelsJson      Json
+  detectedAt        DateTime @default(now()) @updatedAt
+
+  @@map("storefront_profiles")
+}
+
+model StoreSettings {
+  id                String  @id @default(cuid())
+  storeHash         String  @unique
+  store             Store   @relation(fields: [storeHash], references: [storeHash], onDelete: Cascade)
+  themePreset       String  @default("editorial")
+  seoEnabled        Boolean @default(true)
+  enabledChannelIds Json
+
+  @@map("store_settings")
+}
+
+model InstalledScript {
+  id         String   @id @default(cuid())
+  storeHash  String
+  store      Store    @relation(fields: [storeHash], references: [storeHash], onDelete: Cascade)
+  channelId  Int
+  scriptUuid String
+  kind       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([storeHash, channelId, kind])
+  @@map("installed_scripts")
+}

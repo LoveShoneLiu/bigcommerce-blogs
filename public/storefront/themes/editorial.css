@@ -1,0 +1,230 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+/* Photogear homepage: studio white, charcoal, retail red, product-first. */
+body[data-bc-blog-theme="editorial"] {
+  --bc-ink: #282828;
+  --bc-muted: #5c5c5c;
+  --bc-line: #e8e8e8;
+  --bc-bg: #f4f4f4;
+  --bc-surface: #ffffff;
+  --bc-charcoal: #333333;
+  --bc-accent: #c4161c;
+  --bc-body: Inter, "proxima-nova", Arial, Helvetica, sans-serif;
+  background: var(--bc-bg);
+  color: var(--bc-ink);
+  font-family: var(--bc-body);
+}
+
+body[data-bc-blog-theme="editorial"] .blog,
+body[data-bc-blog-theme="editorial"] .page-content {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 40px 20px 88px;
+}
+
+body[data-bc-blog-theme="editorial"] .blog {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 860px) {
+  body[data-bc-blog-theme="editorial"] .blog {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  body[data-bc-blog-theme="editorial"] .blog > .blog-post:first-child,
+  body[data-bc-blog-theme="editorial"] .blog > .bc-blog-featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1.1fr);
+    grid-template-areas: "copy photo";
+    gap: 40px;
+    align-items: center;
+    min-height: 360px;
+    padding: 36px 40px;
+    background: var(--bc-surface);
+  }
+
+  body[data-bc-blog-theme="editorial"] .blog > .blog-post:first-child > img,
+  body[data-bc-blog-theme="editorial"] .blog > .bc-blog-featured > img {
+    grid-area: photo;
+    width: 100%;
+    height: 320px;
+    aspect-ratio: auto;
+    object-fit: contain;
+    object-position: center;
+    background: transparent;
+  }
+
+  body[data-bc-blog-theme="editorial"] .blog > .blog-post:first-child > div,
+  body[data-bc-blog-theme="editorial"] .blog > .bc-blog-featured > div {
+    grid-area: copy;
+  }
+}
+
+body[data-bc-blog-theme="editorial"] .blog > .blog-post,
+body[data-bc-blog-theme="editorial"] .blog-post.bc-blog-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0 0 18px;
+  background: var(--bc-surface);
+  border: 1px solid var(--bc-line);
+  box-shadow: none;
+}
+
+body[data-bc-blog-theme="editorial"] .blog > .blog-post img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  height: auto;
+  object-fit: cover;
+  margin: 0;
+  background: #eef0f2;
+}
+
+body[data-bc-blog-theme="editorial"] .blog-date,
+body[data-bc-blog-theme="editorial"] .blog-author {
+  color: var(--bc-accent);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0 16px;
+}
+
+body[data-bc-blog-theme="editorial"] .blog > .blog-post:first-child .blog-date,
+body[data-bc-blog-theme="editorial"] .blog > .bc-blog-featured .blog-date {
+  padding: 0;
+}
+
+body[data-bc-blog-theme="editorial"] .blog-title,
+body[data-bc-blog-theme="editorial"] .blog h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin: 0;
+  padding: 0 16px;
+  color: var(--bc-ink);
+}
+
+body[data-bc-blog-theme="editorial"] .blog > .blog-post:first-child .blog-title,
+body[data-bc-blog-theme="editorial"] .blog > .blog-post:first-child h2,
+body[data-bc-blog-theme="editorial"] .blog > .bc-blog-featured .blog-title,
+body[data-bc-blog-theme="editorial"] .blog > .bc-blog-featured h2 {
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  line-height: 1.12;
+  padding: 0;
+  color: var(--bc-ink);
+}
+
+body[data-bc-blog-theme="editorial"] .blog a,
+body[data-bc-blog-theme="editorial"] .blog-title a,
+body[data-bc-blog-theme="editorial"] .blog h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+body[data-bc-blog-theme="editorial"] .blog-title a:hover,
+body[data-bc-blog-theme="editorial"] .blog h2 a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+body[data-bc-blog-theme="editorial"] .blog > .blog-post p {
+  margin: 0;
+  padding: 0 16px;
+  color: var(--bc-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+body[data-bc-blog-theme="editorial"] .blog > .blog-post .blog-date {
+  color: var(--bc-accent);
+}
+
+body[data-bc-blog-theme="editorial"] .blog > .blog-post:first-child p,
+body[data-bc-blog-theme="editorial"] .blog > .bc-blog-featured p {
+  padding: 0;
+  font-size: 1.05rem;
+}
+
+body[data-bc-blog-theme="editorial"] .blog > .blog-post .blog-title a,
+body[data-bc-blog-theme="editorial"] .blog > .blog-post .blog-title a:visited {
+  color: var(--bc-ink);
+}
+
+body[data-bc-blog-theme="editorial"] article.blog-post.page-content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px 20px 96px;
+  background: transparent;
+  border: 0;
+}
+
+body[data-bc-blog-theme="editorial"] article.blog-post.page-content .blog-date {
+  padding: 0;
+  margin-bottom: 12px;
+}
+
+body[data-bc-blog-theme="editorial"] .blog-post-title,
+body[data-bc-blog-theme="editorial"] article.blog-post.page-content h1 {
+  font-size: clamp(2.1rem, 5vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  margin: 0 0 24px;
+  padding: 0;
+}
+
+body[data-bc-blog-theme="editorial"] article.blog-post.page-content img {
+  width: 100%;
+  height: auto;
+  margin: 8px 0 28px;
+  background: #eef0f2;
+}
+
+body[data-bc-blog-theme="editorial"] .blog-post-body,
+body[data-bc-blog-theme="editorial"] article.blog-post.page-content p {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--bc-ink);
+  margin: 0 0 1.3em;
+  padding: 0;
+}
+
+body[data-bc-blog-theme="editorial"] article.blog-post.page-content a {
+  color: var(--bc-accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+body[data-bc-blog-theme="editorial"] article.blog-post.page-content a:hover {
+  text-decoration: underline;
+}
+
+body[data-bc-blog-theme="editorial"] blockquote {
+  margin: 1.75em 0;
+  padding: 0 0 0 1em;
+  border-left: 4px solid var(--bc-accent);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--bc-charcoal);
+}
+
+body[data-bc-blog-theme="editorial"] .pagination {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 36px 0 0;
+}
+
+body[data-bc-blog-theme="editorial"] .pagination a {
+  color: var(--bc-charcoal);
+  font-weight: 700;
+  text-decoration: none;
+}

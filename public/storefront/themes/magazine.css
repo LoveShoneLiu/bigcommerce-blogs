@@ -1,0 +1,189 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+/* Photogear header/shop-floor: charcoal #333, white type, red sale marks. */
+body[data-bc-blog-theme="magazine"] {
+  --bc-ink: #ffffff;
+  --bc-muted: #c8c8c8;
+  --bc-line: #4a4a4a;
+  --bc-bg: #333333;
+  --bc-surface: #3d3d3d;
+  --bc-accent: #c4161c;
+  --bc-body: Inter, "proxima-nova", Arial, Helvetica, sans-serif;
+  background: var(--bc-bg);
+  color: var(--bc-ink);
+  font-family: var(--bc-body);
+}
+
+body[data-bc-blog-theme="magazine"] .blog,
+body[data-bc-blog-theme="magazine"] .page-content {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 36px 20px 88px;
+}
+
+body[data-bc-blog-theme="magazine"] .blog {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+@media (min-width: 800px) {
+  body[data-bc-blog-theme="magazine"] .blog {
+    grid-template-columns: 1.2fr 1fr 1fr;
+  }
+
+  body[data-bc-blog-theme="magazine"] .blog > .blog-post:first-child,
+  body[data-bc-blog-theme="magazine"] .blog > .bc-blog-featured {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+}
+
+body[data-bc-blog-theme="magazine"] .blog > .blog-post,
+body[data-bc-blog-theme="magazine"] .blog-post.bc-blog-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0 0 14px;
+  background: var(--bc-surface);
+  border: 0;
+  box-shadow: none;
+}
+
+body[data-bc-blog-theme="magazine"] .blog > .blog-post img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  height: auto;
+  object-fit: cover;
+  margin: 0;
+  background: #2a2a2a;
+}
+
+body[data-bc-blog-theme="magazine"] .blog-date,
+body[data-bc-blog-theme="magazine"] .blog-author {
+  color: var(--bc-accent);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0 14px;
+}
+
+body[data-bc-blog-theme="magazine"] .blog-title,
+body[data-bc-blog-theme="magazine"] .blog h2 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin: 0;
+  padding: 0 14px;
+  color: var(--bc-ink);
+  text-wrap: balance;
+}
+
+body[data-bc-blog-theme="magazine"] .blog > .blog-post:first-child .blog-title,
+body[data-bc-blog-theme="magazine"] .blog > .blog-post:first-child h2,
+body[data-bc-blog-theme="magazine"] .blog > .bc-blog-featured .blog-title,
+body[data-bc-blog-theme="magazine"] .blog > .bc-blog-featured h2 {
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+body[data-bc-blog-theme="magazine"] .blog a,
+body[data-bc-blog-theme="magazine"] .blog-title a,
+body[data-bc-blog-theme="magazine"] .blog h2 a,
+body[data-bc-blog-theme="magazine"] .blog .blog-title a:visited {
+  color: var(--bc-ink);
+  text-decoration: none;
+}
+
+body[data-bc-blog-theme="magazine"] .blog-title a:hover,
+body[data-bc-blog-theme="magazine"] .blog h2 a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: var(--bc-ink);
+}
+
+body[data-bc-blog-theme="magazine"] .blog > .blog-post p {
+  margin: 0;
+  padding: 0 14px;
+  color: var(--bc-muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+body[data-bc-blog-theme="magazine"] .blog > .blog-post .blog-date {
+  color: var(--bc-accent);
+}
+
+body[data-bc-blog-theme="magazine"] article.blog-post.page-content {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 40px 20px 96px;
+  background: transparent;
+  border: 0;
+}
+
+body[data-bc-blog-theme="magazine"] article.blog-post.page-content .blog-date {
+  padding: 0;
+  margin-bottom: 12px;
+  color: var(--bc-accent);
+}
+
+body[data-bc-blog-theme="magazine"] .blog-post-title,
+body[data-bc-blog-theme="magazine"] article.blog-post.page-content h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  margin: 0 0 22px;
+  padding: 0;
+}
+
+body[data-bc-blog-theme="magazine"] article.blog-post.page-content img {
+  width: 100%;
+  height: auto;
+  margin: 8px 0 26px;
+  background: #2a2a2a;
+}
+
+body[data-bc-blog-theme="magazine"] .blog-post-body,
+body[data-bc-blog-theme="magazine"] article.blog-post.page-content p {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: #ececec;
+  margin: 0 0 1.3em;
+  padding: 0;
+}
+
+body[data-bc-blog-theme="magazine"] article.blog-post.page-content a {
+  color: #ffb3b6;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+body[data-bc-blog-theme="magazine"] blockquote {
+  margin: 1.75em 0;
+  padding: 0 0 0 1em;
+  border-left: 4px solid var(--bc-accent);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #fff;
+}
+
+body[data-bc-blog-theme="magazine"] .pagination {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 32px 0 0;
+}
+
+body[data-bc-blog-theme="magazine"] .pagination a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
