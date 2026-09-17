@@ -28,11 +28,16 @@ export async function GET(request: NextRequest) {
       ownerEmail: token.user?.email,
     });
 
-    await applyStorefrontConfig({
-      storeHash,
-      themePreset: "editorial",
-      seoEnabled: true,
-    });
+    try {
+      await applyStorefrontConfig({
+        storeHash,
+        themePreset: "editorial",
+        seoEnabled: true,
+      });
+    } catch (error) {
+      // OAuth succeeded; merchant can repair scripts from the dashboard.
+      console.error("Post-install storefront config failed", error);
+    }
 
     if (isExternal) {
       await notifyExternalInstall(true);
@@ -47,12 +52,16 @@ export async function GET(request: NextRequest) {
     const response = NextResponse.redirect(destination);
     response.cookies.set(SESSION_COOKIE, context, sessionCookieOptions());
     return response;
-  } catch {
+  } catch (error) {
+    console.error("App installation failed", error);
     if (isExternal) {
       await notifyExternalInstall(false);
     }
-    return new NextResponse("App installation failed. Please retry from BigCommerce.", {
-      status: 400,
-    });
+    const message =
+      error instanceof Error ? error.message : "Unknown installation error";
+    return new NextResponse(
+      `App installation failed. Please retry from BigCommerce. (${message})`,
+      { status: 400 },
+    );
   }
 }

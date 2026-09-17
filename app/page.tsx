@@ -78,25 +78,42 @@ export default async function Home({ searchParams }: HomeProps) {
     );
   }
 
-  const capability = await refreshCapability(
-    store.storeHash,
-    store.accessToken,
-  );
+  let capability;
+  let health: { missing: boolean; details: string[] } = {
+    missing: false,
+    details: [],
+  };
+  try {
+    capability = await refreshCapability(store.storeHash, store.accessToken);
+    health =
+      capability.capability === "stencil_blog"
+        ? await inspectScriptHealth({
+            storeHash: store.storeHash,
+            encryptedAccessToken: store.accessToken,
+            capability,
+            seoEnabled: store.settings?.seoEnabled ?? true,
+            existingScripts: store.scripts,
+          })
+        : { missing: false, details: [] };
+  } catch (error) {
+    console.error("Dashboard capability refresh failed", error);
+    return (
+      <Message>
+        <p>
+          The app is installed, but reading store settings failed. Confirm
+          Vercel environment variables (especially TOKEN_ENCRYPTION_KEY and
+          BC_CLIENT_SECRET), redeploy, then open the app again. You can also
+          uninstall and reinstall.
+        </p>
+      </Message>
+    );
+  }
+
   const storedPreset = store.settings?.themePreset || "";
   const themePreset: ThemePreset = isThemePreset(storedPreset)
     ? storedPreset
     : "editorial";
   const seoEnabled = store.settings?.seoEnabled ?? true;
-  const health =
-    capability.capability === "stencil_blog"
-      ? await inspectScriptHealth({
-          storeHash: store.storeHash,
-          encryptedAccessToken: store.accessToken,
-          capability,
-          seoEnabled,
-          existingScripts: store.scripts,
-        })
-      : { missing: false, details: [] };
 
   const channels = capability.channels as StorefrontChannel[];
   const enabled = channels.find(
