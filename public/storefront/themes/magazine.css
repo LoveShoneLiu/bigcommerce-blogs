@@ -17,25 +17,27 @@ body[data-bc-blog-theme="magazine"] {
 body[data-bc-blog-theme="magazine"] .blog,
 body[data-bc-blog-theme="magazine"] .page-content {
   max-width: 1120px;
+  width: 100%;
   margin: 0 auto;
   padding: 36px 20px 88px;
+  box-sizing: border-box;
 }
 
 body[data-bc-blog-theme="magazine"] .blog {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 18px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
 }
 
 @media (min-width: 800px) {
   body[data-bc-blog-theme="magazine"] .blog {
-    grid-template-columns: 1.2fr 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  /* Featured row is full width so a single post is not trapped in one narrow column. */
   body[data-bc-blog-theme="magazine"] .blog > .blog-post:first-child,
   body[data-bc-blog-theme="magazine"] .blog > .bc-blog-featured {
-    grid-column: 1;
-    grid-row: 1 / span 2;
+    grid-column: 1 / -1;
   }
 }
 
@@ -45,6 +47,8 @@ body[data-bc-blog-theme="magazine"] .blog-post.bc-blog-card {
   flex-direction: column;
   gap: 10px;
   margin: 0;
+  min-width: 0;
+  width: 100%;
   padding: 0 0 14px;
   background: var(--bc-surface);
   border: 0;
