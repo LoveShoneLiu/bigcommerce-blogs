@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
-/* Photogear homepage: studio white, charcoal, retail red, product-first. */
+/* Showroom / editorial — Cornerstone article.blog markup */
 body[data-bc-blog-theme="editorial"] {
   --bc-ink: #282828;
   --bc-muted: #5c5c5c;
@@ -15,73 +15,106 @@ body[data-bc-blog-theme="editorial"] {
   font-family: var(--bc-body);
 }
 
-body[data-bc-blog-theme="editorial"] .blog,
-body[data-bc-blog-theme="editorial"] .page-content {
-  max-width: 1160px;
-  margin: 0 auto;
-  padding: 40px 20px 88px;
+body[data-bc-blog-theme="editorial"] .page,
+body[data-bc-blog-theme="editorial"] .page-content,
+body[data-bc-blog-theme="editorial"] .page-content--centered,
+body[data-bc-blog-theme="editorial"] .page-content--full {
+  float: none !important;
+  width: 100% !important;
+  max-width: 1160px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
 }
 
-body[data-bc-blog-theme="editorial"] .blog {
+body[data-bc-blog-theme="editorial"] .bc-blog-list {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 24px;
+  width: 100%;
+  margin: 24px 0 64px;
 }
 
 @media (min-width: 860px) {
-  body[data-bc-blog-theme="editorial"] .blog {
-    grid-template-columns: 1fr 1fr;
+  body[data-bc-blog-theme="editorial"] .bc-blog-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  body[data-bc-blog-theme="editorial"] .blog > .blog-post:first-child,
-  body[data-bc-blog-theme="editorial"] .blog > .bc-blog-featured {
+  body[data-bc-blog-theme="editorial"] .bc-blog-list > .bc-blog-featured {
     grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1.1fr);
+    grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.1fr);
     grid-template-areas: "copy photo";
     gap: 40px;
     align-items: center;
-    min-height: 360px;
     padding: 36px 40px;
     background: var(--bc-surface);
   }
 
-  body[data-bc-blog-theme="editorial"] .blog > .blog-post:first-child > img,
-  body[data-bc-blog-theme="editorial"] .blog > .bc-blog-featured > img {
+  body[data-bc-blog-theme="editorial"] .bc-blog-featured .blog-post-figure {
     grid-area: photo;
-    width: 100%;
-    height: 320px;
-    aspect-ratio: auto;
-    object-fit: contain;
-    object-position: center;
-    background: transparent;
   }
 
-  body[data-bc-blog-theme="editorial"] .blog > .blog-post:first-child > div,
-  body[data-bc-blog-theme="editorial"] .blog > .bc-blog-featured > div {
+  body[data-bc-blog-theme="editorial"] .bc-blog-featured .blog-post-body {
     grid-area: copy;
   }
 }
 
-body[data-bc-blog-theme="editorial"] .blog > .blog-post,
-body[data-bc-blog-theme="editorial"] .blog-post.bc-blog-card {
+body[data-bc-blog-theme="editorial"] article.blog,
+body[data-bc-blog-theme="editorial"] .bc-blog-card {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  float: none !important;
+  width: 100% !important;
+  max-width: none !important;
   margin: 0;
+  min-width: 0;
   padding: 0 0 18px;
   background: var(--bc-surface);
   border: 1px solid var(--bc-line);
   box-shadow: none;
+  clear: both;
 }
 
-body[data-bc-blog-theme="editorial"] .blog > .blog-post img {
+body[data-bc-blog-theme="editorial"] .blog-post-figure,
+body[data-bc-blog-theme="editorial"] .blog-post-body {
+  float: none !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0;
+  padding: 0;
+}
+
+body[data-bc-blog-theme="editorial"] .blog-thumbnail,
+body[data-bc-blog-theme="editorial"] .blog-post-figure img,
+body[data-bc-blog-theme="editorial"] article.blog img {
+  display: block;
   width: 100%;
-  aspect-ratio: 16 / 10;
+  max-width: 100%;
   height: auto;
+  aspect-ratio: 16 / 10;
   object-fit: cover;
   margin: 0;
   background: #eef0f2;
+}
+
+body[data-bc-blog-theme="editorial"] .bc-blog-featured .blog-post-figure img {
+  aspect-ratio: auto;
+  height: 320px;
+  object-fit: contain;
+  background: transparent;
+}
+
+body[data-bc-blog-theme="editorial"] .blog-header {
+  margin: 0;
+  padding: 0 16px;
+}
+
+body[data-bc-blog-theme="editorial"] .bc-blog-featured .blog-header {
+  padding: 0;
 }
 
 body[data-bc-blog-theme="editorial"] .blog-date,
@@ -91,50 +124,37 @@ body[data-bc-blog-theme="editorial"] .blog-author {
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin: 0;
-  padding: 0 16px;
-}
-
-body[data-bc-blog-theme="editorial"] .blog > .blog-post:first-child .blog-date,
-body[data-bc-blog-theme="editorial"] .blog > .bc-blog-featured .blog-date {
-  padding: 0;
+  margin: 0 0 8px;
 }
 
 body[data-bc-blog-theme="editorial"] .blog-title,
-body[data-bc-blog-theme="editorial"] .blog h2 {
+body[data-bc-blog-theme="editorial"] article.blog h1,
+body[data-bc-blog-theme="editorial"] article.blog h2 {
   font-size: 1.25rem;
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: -0.03em;
-  margin: 0;
-  padding: 0 16px;
+  margin: 0 0 10px;
   color: var(--bc-ink);
 }
 
-body[data-bc-blog-theme="editorial"] .blog > .blog-post:first-child .blog-title,
-body[data-bc-blog-theme="editorial"] .blog > .blog-post:first-child h2,
-body[data-bc-blog-theme="editorial"] .blog > .bc-blog-featured .blog-title,
-body[data-bc-blog-theme="editorial"] .blog > .bc-blog-featured h2 {
+body[data-bc-blog-theme="editorial"] .bc-blog-featured .blog-title,
+body[data-bc-blog-theme="editorial"] .bc-blog-featured h2 {
   font-size: clamp(1.7rem, 3vw, 2.4rem);
-  line-height: 1.12;
-  padding: 0;
-  color: var(--bc-ink);
 }
 
-body[data-bc-blog-theme="editorial"] .blog a,
-body[data-bc-blog-theme="editorial"] .blog-title a,
-body[data-bc-blog-theme="editorial"] .blog h2 a {
+body[data-bc-blog-theme="editorial"] article.blog a,
+body[data-bc-blog-theme="editorial"] .blog-title a {
   color: inherit;
   text-decoration: none;
 }
 
-body[data-bc-blog-theme="editorial"] .blog-title a:hover,
-body[data-bc-blog-theme="editorial"] .blog h2 a:hover {
+body[data-bc-blog-theme="editorial"] .blog-title a:hover {
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
-body[data-bc-blog-theme="editorial"] .blog > .blog-post p {
+body[data-bc-blog-theme="editorial"] .blog-post {
   margin: 0;
   padding: 0 16px;
   color: var(--bc-muted);
@@ -142,68 +162,9 @@ body[data-bc-blog-theme="editorial"] .blog > .blog-post p {
   line-height: 1.5;
 }
 
-body[data-bc-blog-theme="editorial"] .blog > .blog-post .blog-date {
-  color: var(--bc-accent);
-}
-
-body[data-bc-blog-theme="editorial"] .blog > .blog-post:first-child p,
-body[data-bc-blog-theme="editorial"] .blog > .bc-blog-featured p {
+body[data-bc-blog-theme="editorial"] .bc-blog-featured .blog-post {
   padding: 0;
   font-size: 1.05rem;
-}
-
-body[data-bc-blog-theme="editorial"] .blog > .blog-post .blog-title a,
-body[data-bc-blog-theme="editorial"] .blog > .blog-post .blog-title a:visited {
-  color: var(--bc-ink);
-}
-
-body[data-bc-blog-theme="editorial"] article.blog-post.page-content {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 48px 20px 96px;
-  background: transparent;
-  border: 0;
-}
-
-body[data-bc-blog-theme="editorial"] article.blog-post.page-content .blog-date {
-  padding: 0;
-  margin-bottom: 12px;
-}
-
-body[data-bc-blog-theme="editorial"] .blog-post-title,
-body[data-bc-blog-theme="editorial"] article.blog-post.page-content h1 {
-  font-size: clamp(2.1rem, 5vw, 3.25rem);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.035em;
-  margin: 0 0 24px;
-  padding: 0;
-}
-
-body[data-bc-blog-theme="editorial"] article.blog-post.page-content img {
-  width: 100%;
-  height: auto;
-  margin: 8px 0 28px;
-  background: #eef0f2;
-}
-
-body[data-bc-blog-theme="editorial"] .blog-post-body,
-body[data-bc-blog-theme="editorial"] article.blog-post.page-content p {
-  font-size: 1.0625rem;
-  line-height: 1.7;
-  color: var(--bc-ink);
-  margin: 0 0 1.3em;
-  padding: 0;
-}
-
-body[data-bc-blog-theme="editorial"] article.blog-post.page-content a {
-  color: var(--bc-accent);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-body[data-bc-blog-theme="editorial"] article.blog-post.page-content a:hover {
-  text-decoration: underline;
 }
 
 body[data-bc-blog-theme="editorial"] blockquote {
