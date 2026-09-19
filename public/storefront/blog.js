@@ -7,7 +7,6 @@
 
     body.classList.add("bc-blog-enhanced");
 
-    // Cornerstone: each post is <article class="blog">.
     var articles = Array.prototype.slice.call(
       document.querySelectorAll("article.blog"),
     );
@@ -22,13 +21,24 @@
           if (index === 0) {
             article.classList.add("bc-blog-featured");
           }
+          var figure = article.querySelector(".blog-post-figure");
+          var hasImage = !!(
+            figure &&
+            figure.querySelector("img") &&
+            figure.querySelector("img").getAttribute("src")
+          );
+          if (!hasImage) {
+            article.classList.add("bc-blog-no-image");
+            if (figure) {
+              figure.style.display = "none";
+            }
+          }
           list.appendChild(article);
         });
       }
       return;
     }
 
-    // Dev mock / alternate markup: .blog > .blog-post
     var posts = document.querySelectorAll(
       ".blog > .blog-post, .blog-posts > .blog-post",
     );
