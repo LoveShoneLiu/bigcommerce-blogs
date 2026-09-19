@@ -34,6 +34,16 @@ export async function listScripts(
   return response.data ?? [];
 }
 
+export async function getScript(
+  client: BcClient,
+  uuid: string,
+): Promise<ScriptRecord | null> {
+  const response = await client.request<ScriptWriteResponse>(
+    `/v3/content/scripts/${uuid}`,
+  );
+  return response.data ?? null;
+}
+
 export async function createScript(
   client: BcClient,
   input: CreateScriptInput,

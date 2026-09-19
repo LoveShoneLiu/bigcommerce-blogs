@@ -9,6 +9,7 @@ import { createBcClient } from "@/lib/bc/client";
 import {
   createScript,
   deleteScript,
+  getScript,
   listScripts,
   updateScriptHtml,
 } from "@/lib/bc/scripts";
@@ -18,6 +19,7 @@ import { detectCapability } from "@/features/detect/capability";
 import { buildSeoScriptHtml } from "@/features/seo/template";
 import { buildThemeScriptHtml } from "@/features/theme/assets";
 import type { ThemePreset } from "@/features/theme/presets";
+import { getEnv } from "@/lib/env";
 import { prisma } from "@/lib/prisma";
 import {
   deleteInstalledScripts,
@@ -31,6 +33,7 @@ const SEO_SCRIPT_NAME = "Blog Style SEO Structured Data";
 
 export type ScriptHealth = {
   missing: boolean;
+  outdated: boolean;
   details: string[];
 };
 
@@ -158,12 +161,12 @@ export async function inspectScriptHealth(input: {
   }>;
 }): Promise<ScriptHealth> {
   if (input.capability.capability !== "stencil_blog") {
-    return { missing: false, details: [] };
+    return { missing: false, outdated: false, details: [] };
   }
 
   const channelId = input.capability.enabledChannelIds[0];
   if (!channelId) {
-    return { missing: false, details: [] };
+    return { missing: false, outdated: false, details: [] };
   }
 
   const client = createBcClient(
@@ -171,22 +174,50 @@ export async function inspectScriptHealth(input: {
     getStoreAccessToken(input.encryptedAccessToken),
   );
   const remote = await listScripts(client, channelId);
-  const remoteIds = new Set(remote.map((script) => script.uuid));
+  const remoteById = new Map(remote.map((script) => [script.uuid, script]));
   const details: string[] = [];
 
   const themeUuid = findUuid(input.existingScripts, channelId, "theme");
-  if (!themeUuid || !remoteIds.has(themeUuid)) {
+  const themeRemote = themeUuid ? remoteById.get(themeUuid) : undefined;
+  if (!themeUuid || !themeRemote) {
     details.push("Theme script is missing from Script Manager.");
   }
 
   if (input.seoEnabled) {
     const seoUuid = findUuid(input.existingScripts, channelId, "seo");
-    if (!seoUuid || !remoteIds.has(seoUuid)) {
+    if (!seoUuid || !remoteById.has(seoUuid)) {
       details.push("SEO script is missing from Script Manager.");
     }
   }
 
-  return { missing: details.length > 0, details };
+  const assetVersion = getEnv().assetVersion;
+  let themeHtml = themeRemote?.html || "";
+  if (themeRemote && !themeHtml && themeUuid) {
+    try {
+      const full = await getScript(client, themeUuid);
+      themeHtml = full?.html || "";
+    } catch {
+      themeHtml = "";
+    }
+  }
+
+  // Only treat as outdated when we can read the script HTML and the
+  // current deploy token is absent. Empty HTML means "unknown", not stale.
+  const outdated =
+    Boolean(themeRemote) &&
+    themeHtml.length > 0 &&
+    !themeHtml.includes(`v=${encodeURIComponent(assetVersion)}`) &&
+    !themeHtml.includes(`v=${assetVersion}`);
+
+  if (outdated) {
+    details.push("Storefront assets were redeployed; scripts will refresh.");
+  }
+
+  return {
+    missing: details.some((detail) => detail.includes("missing")),
+    outdated,
+    details,
+  };
 }
 
 export async function removeStorefrontScripts(input: {

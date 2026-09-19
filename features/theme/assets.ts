@@ -20,6 +20,9 @@ export function buildThemeScriptHtml(preset: ThemePreset): string {
   var pageType = '{{page_type}}';
   if (pageType !== 'blog' && pageType !== 'blog_post') return;
   document.body.setAttribute('data-bc-blog-theme', '${safePreset}');
+  if (pageType === 'blog_post') {
+    document.body.classList.add('bc-blog-post-page');
+  }
   if (!document.getElementById('bc-blog-theme-css')) {
     var link = document.createElement('link');
     link.id = 'bc-blog-theme-css';

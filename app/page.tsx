@@ -7,6 +7,7 @@ import {
   otherStorefronts,
   refreshCapability,
 } from "@/features/scripts/sync";
+import { applyStorefrontConfig } from "@/features/install/complete-install";
 import { isThemePreset, type ThemePreset } from "@/features/theme/presets";
 import type { StorefrontChannel } from "@/lib/bc/channels";
 import { isLocalDev } from "@/lib/dev/guard";
@@ -79,22 +80,51 @@ export default async function Home({ searchParams }: HomeProps) {
   }
 
   let capability;
-  let health: { missing: boolean; details: string[] } = {
+  let health: { missing: boolean; outdated: boolean; details: string[] } = {
     missing: false,
+    outdated: false,
     details: [],
   };
+  const storedPresetEarly = store.settings?.themePreset || "";
+  const themePresetEarly: ThemePreset = isThemePreset(storedPresetEarly)
+    ? storedPresetEarly
+    : "editorial";
+  const seoEnabledEarly = store.settings?.seoEnabled ?? true;
+
   try {
     capability = await refreshCapability(store.storeHash, store.accessToken);
-    health =
-      capability.capability === "stencil_blog"
-        ? await inspectScriptHealth({
+    if (capability.capability === "stencil_blog") {
+      // Reload scripts after capability so channel ids are fresh.
+      const freshStore = await getActiveStore(session.storeHash);
+      health = await inspectScriptHealth({
+        storeHash: store.storeHash,
+        encryptedAccessToken: store.accessToken,
+        capability,
+        seoEnabled: seoEnabledEarly,
+        existingScripts: freshStore?.scripts ?? store.scripts,
+      });
+
+      // After each deploy, open the app once to push the new asset version.
+      if (health.missing || health.outdated) {
+        try {
+          await applyStorefrontConfig({
+            storeHash: store.storeHash,
+            themePreset: themePresetEarly,
+            seoEnabled: seoEnabledEarly,
+          });
+          const repairedStore = await getActiveStore(session.storeHash);
+          health = await inspectScriptHealth({
             storeHash: store.storeHash,
             encryptedAccessToken: store.accessToken,
             capability,
-            seoEnabled: store.settings?.seoEnabled ?? true,
-            existingScripts: store.scripts,
-          })
-        : { missing: false, details: [] };
+            seoEnabled: seoEnabledEarly,
+            existingScripts: repairedStore?.scripts ?? store.scripts,
+          });
+        } catch (repairError) {
+          console.error("Automatic script refresh failed", repairError);
+        }
+      }
+    }
   } catch (error) {
     console.error("Dashboard capability refresh failed", error);
     const detail =
@@ -113,11 +143,8 @@ export default async function Home({ searchParams }: HomeProps) {
     );
   }
 
-  const storedPreset = store.settings?.themePreset || "";
-  const themePreset: ThemePreset = isThemePreset(storedPreset)
-    ? storedPreset
-    : "editorial";
-  const seoEnabled = store.settings?.seoEnabled ?? true;
+  const themePreset = themePresetEarly;
+  const seoEnabled = seoEnabledEarly;
 
   const channels = capability.channels as StorefrontChannel[];
   const enabled = channels.find(

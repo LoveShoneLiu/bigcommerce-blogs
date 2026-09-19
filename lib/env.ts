@@ -19,6 +19,27 @@ function stripTrailingSlash(url: string): string {
   return url.endsWith("/") ? url.slice(0, -1) : url;
 }
 
+/**
+ * Cache-busting token for /storefront CSS+JS.
+ * Prefer an explicit override, otherwise use the Vercel git SHA so each
+ * deploy gets a new version without manual env edits.
+ */
+export function resolveAssetVersion(): string {
+  const manual = process.env.STOREFRONT_ASSET_VERSION?.trim();
+  if (manual) {
+    return manual;
+  }
+
+  const sha =
+    process.env.VERCEL_GIT_COMMIT_SHA?.trim() ||
+    process.env.CF_PAGES_COMMIT_SHA?.trim();
+  if (sha) {
+    return sha.slice(0, 7);
+  }
+
+  return "dev";
+}
+
 export function getEnv(): AppEnv {
   const databaseUrl =
     process.env.DATABASE_URL?.trim() ||
@@ -44,7 +65,7 @@ export function getEnv(): AppEnv {
     bcClientSecret: readRequired("BC_CLIENT_SECRET"),
     tokenEncryptionKey,
     databaseUrl,
-    assetVersion: process.env.STOREFRONT_ASSET_VERSION?.trim() || "1",
+    assetVersion: resolveAssetVersion(),
   };
 }
 

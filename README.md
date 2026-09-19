@@ -53,6 +53,8 @@ Draft apps install only on stores owned by the same email as the Developer Porta
 - `APP_URL` ← `https://<your-vercel-domain>`
 - `BC_CLIENT_ID`, `BC_CLIENT_SECRET`, `TOKEN_ENCRYPTION_KEY`
 
+Storefront CSS/JS cache-busting uses the Vercel git commit SHA automatically. You do not need to set `STOREFRONT_ASSET_VERSION` unless you want a manual override. Opening the merchant app after a deploy refreshes Script Manager URLs when the asset version changes.
+
 4. Deploy. The build runs `prisma migrate deploy` then `next build`.
 5. Update Developer Portal callback URLs to the Vercel domain.
 

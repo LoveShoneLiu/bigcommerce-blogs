@@ -33,6 +33,9 @@ body {
 
 body:has(.sf-preview-root) {
   padding: 0;
+}
+
+body:has(.sf-preview-root):not([data-bc-blog-theme]) {
   background: #fff;
   color: #1c1917;
 }

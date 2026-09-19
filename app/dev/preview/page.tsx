@@ -71,70 +71,101 @@ export default async function StorefrontPreviewPage({
       <link rel="stylesheet" href={`/storefront/themes/${theme}.css`} />
       <Script src="/storefront/blog.js" strategy="afterInteractive" />
       <div className="sf-preview-root">
-      <ApplyBlogTheme theme={theme} />
-      <nav className="sf-preview-bar" aria-label="Preview controls">
-        <Link href="/dev">Back to mock app</Link>
-        {THEME_PRESETS.map((preset) => (
-          <Link
-            key={preset}
-            href={`/dev/preview?theme=${preset}&view=${view}`}
-            aria-current={preset === theme ? "page" : undefined}
-          >
-            {preset}
-          </Link>
-        ))}
-        <Link href={`/dev/preview?theme=${theme}&view=list`}>List</Link>
-        <Link href={`/dev/preview?theme=${theme}&view=post`}>Post</Link>
-      </nav>
-      {view === "list" ? (
-        <div className="page-content">
-          <div className="blog">
-            {POSTS.map((post, index) => (
-              <article
-                key={post.title}
-                className={
-                  index === 0 ? "blog-post bc-blog-featured" : "blog-post"
-                }
-              >
-                <img src={post.image} alt={post.title} />
-                <div>
-                  <p className="blog-date">{post.date}</p>
-                  <h2 className="blog-title">
-                    <Link href={`/dev/preview?theme=${theme}&view=post`}>
-                      {post.title}
-                    </Link>
-                  </h2>
-                  <p>{post.excerpt}</p>
+        <ApplyBlogTheme theme={theme} postPage={view === "post"} />
+        <nav className="sf-preview-bar" aria-label="Preview controls">
+          <Link href="/dev">Back to mock app</Link>
+          {THEME_PRESETS.map((preset) => (
+            <Link
+              key={preset}
+              href={`/dev/preview?theme=${preset}&view=${view}`}
+              aria-current={preset === theme ? "page" : undefined}
+            >
+              {preset}
+            </Link>
+          ))}
+          <Link href={`/dev/preview?theme=${theme}&view=list`}>List</Link>
+          <Link href={`/dev/preview?theme=${theme}&view=post`}>Post</Link>
+        </nav>
+        {view === "list" ? (
+          <div className="page-content">
+            <h1 className="page-heading">Blog</h1>
+            <div className="bc-blog-list">
+              {POSTS.map((post, index) => (
+                <article
+                  key={post.title}
+                  className={
+                    index === 0
+                      ? "blog bc-blog-card bc-blog-featured"
+                      : "blog bc-blog-card"
+                  }
+                >
+                  <figure className="blog-post-figure">
+                    <img
+                      className="blog-thumbnail"
+                      src={post.image}
+                      alt={post.title}
+                    />
+                  </figure>
+                  <div className="blog-post-body">
+                    <header className="blog-header">
+                      <p className="blog-date">{post.date}</p>
+                      <h2 className="blog-title">
+                        <Link href={`/dev/preview?theme=${theme}&view=post`}>
+                          {post.title}
+                        </Link>
+                      </h2>
+                    </header>
+                    <div className="blog-post">
+                      <p>{post.excerpt}</p>
+                      <p>
+                        <Link href={`/dev/preview?theme=${theme}&view=post`}>
+                          Read More
+                        </Link>
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="page-content">
+            <article className="blog bc-blog-single bc-blog-card">
+              <figure className="blog-post-figure">
+                <img
+                  className="blog-thumbnail"
+                  src={featured.image}
+                  alt={featured.title}
+                />
+              </figure>
+              <div className="blog-post-body">
+                <header className="blog-header">
+                  <p className="blog-date">New</p>
+                  <h1 className="blog-title">{featured.title}</h1>
+                </header>
+                <div className="blog-post">
+                  <p>
+                    Photogear is a Mt Eden camera shop: Canon, Sony, Fujifilm,
+                    DJI, Godox, SmallRig. The site is charcoal in the header,
+                    white in the aisle, and red when something is new or on
+                    bonus.
+                  </p>
+                  <blockquote>
+                    Created to explore. Expert advice, gear in stock, shipped
+                    twice a day.
+                  </blockquote>
+                  <p>
+                    Blog posts here should read like in-store notes: which body
+                    landed, which card to buy, how to light a wedding — not like
+                    a fashion magazine.
+                  </p>
+                  <p>{featured.excerpt}</p>
                 </div>
-              </article>
-            ))}
+              </div>
+            </article>
           </div>
-        </div>
-      ) : (
-        <article className="blog-post page-content">
-          <p className="blog-date">New</p>
-          <h1 className="blog-post-title">{featured.title}</h1>
-          <img src={featured.image} alt={featured.title} />
-          <div className="blog-post-body">
-            <p>
-              Photogear is a Mt Eden camera shop: Canon, Sony, Fujifilm, DJI,
-              Godox, SmallRig. The site is charcoal in the header, white in the
-              aisle, and red when something is new or on bonus.
-            </p>
-            <blockquote>
-              Created to explore. Expert advice, gear in stock, shipped twice a
-              day.
-            </blockquote>
-            <p>
-              Blog posts here should read like in-store notes: which body landed,
-              which card to buy, how to light a wedding — not like a fashion
-              magazine.
-            </p>
-            <p>{featured.excerpt}</p>
-          </div>
-        </article>
-      )}
-    </div>
+        )}
+      </div>
     </>
   );
 }
