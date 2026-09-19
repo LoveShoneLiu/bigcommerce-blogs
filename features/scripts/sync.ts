@@ -38,15 +38,33 @@ export async function refreshCapability(
   storeHash: string,
   encryptedAccessToken: string,
 ): Promise<CapabilityResult> {
-  const client = createBcClient(
-    storeHash,
-    getStoreAccessToken(encryptedAccessToken),
-  );
-  const [store, channels, hasPosts] = await Promise.all([
-    getStoreInfo(client),
-    getStorefrontChannels(client),
-    storeHasBlogPosts(client),
-  ]);
+  let accessToken: string;
+  try {
+    accessToken = getStoreAccessToken(encryptedAccessToken);
+  } catch (error) {
+    throw new Error(
+      `Cannot decrypt the store token. Set TOKEN_ENCRYPTION_KEY on Vercel to the same 64-hex value used at install, redeploy, then reinstall. (${error instanceof Error ? error.message : "decrypt failed"})`,
+    );
+  }
+
+  const client = createBcClient(storeHash, accessToken);
+  const store = await getStoreInfo(client);
+
+  let channels: StorefrontChannel[] = [];
+  try {
+    channels = await getStorefrontChannels(client);
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : "channels request failed";
+    const result = detectCapability(store, []);
+    return {
+      ...result,
+      capability: "unsupported",
+      reason: `Could not read storefront channels (${detail}). In Developer Portal, enable Channel Settings read-only and Content modify, Save, then uninstall and reinstall the app so BigCommerce re-grants scopes.`,
+      enabledChannelIds: [],
+    };
+  }
+
+  const hasPosts = await storeHasBlogPosts(client);
   const result = detectCapability(store, channels);
   const reason =
     result.capability === "stencil_blog" && !hasPosts

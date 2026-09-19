@@ -39,9 +39,15 @@ export function detectCapability(
   }
 
   if (!primary) {
+    const found =
+      channels.length === 0
+        ? "the Channels API returned no storefronts"
+        : `found: ${channels
+            .map((channel) => `${channel.name} (${channel.status}/${channel.platform})`)
+            .join(", ")}`;
     return {
       capability: "unsupported",
-      reason: "No active storefront channel was found on this store.",
+      reason: `No usable storefront channel was found on this store (${found}). Dev stores in prelaunch are supported after the latest app update.`,
       stencilEnabled,
       defaultChannelId,
       enabledChannelIds: [],

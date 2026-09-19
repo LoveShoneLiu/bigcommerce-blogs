@@ -97,13 +97,17 @@ export default async function Home({ searchParams }: HomeProps) {
         : { missing: false, details: [] };
   } catch (error) {
     console.error("Dashboard capability refresh failed", error);
+    const detail =
+      error instanceof Error ? error.message : "Unknown dashboard error";
     return (
       <Message>
+        <p>The app is installed, but reading store settings failed.</p>
+        <p className="bd-muted">{detail}</p>
         <p>
-          The app is installed, but reading store settings failed. Confirm
-          Vercel environment variables (especially TOKEN_ENCRYPTION_KEY and
-          BC_CLIENT_SECRET), redeploy, then open the app again. You can also
-          uninstall and reinstall.
+          Most often this means Developer Portal scopes are incomplete, or
+          TOKEN_ENCRYPTION_KEY on Vercel does not match the key used at
+          install. Fix scopes or the key, redeploy if needed, then uninstall
+          and reinstall.
         </p>
       </Message>
     );

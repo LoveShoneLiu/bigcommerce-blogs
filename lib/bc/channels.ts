@@ -22,8 +22,12 @@ export async function getStorefrontChannels(
 }
 
 export function isActiveStorefront(channel: StorefrontChannel): boolean {
+  // Storefront statuses: prelaunch | active | inactive | archived | deleted
+  // Dev stores are often still "prelaunch"; Scripts API works there too.
   return (
     channel.type === "storefront" &&
-    (channel.status === "active" || channel.status === "connected")
+    (channel.status === "active" ||
+      channel.status === "prelaunch" ||
+      channel.status === "connected")
   );
 }
