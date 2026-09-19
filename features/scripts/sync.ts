@@ -26,8 +26,8 @@ import {
   saveStorefrontProfile,
 } from "@/lib/tenancy/stores";
 
-const THEME_SCRIPT_NAME = "Blog Style & SEO — Theme";
-const SEO_SCRIPT_NAME = "Blog Style & SEO — Structured Data";
+const THEME_SCRIPT_NAME = "Blog Style SEO Theme";
+const SEO_SCRIPT_NAME = "Blog Style SEO Structured Data";
 
 export type ScriptHealth = {
   missing: boolean;
