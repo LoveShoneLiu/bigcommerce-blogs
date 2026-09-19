@@ -16,7 +16,7 @@ import { getActiveStore } from "@/lib/tenancy/stores";
 export const dynamic = "force-dynamic";
 
 type HomeProps = {
-  searchParams: Promise<{ context?: string }>;
+  searchParams: Promise<{ context?: string; error?: string }>;
 };
 
 function Message({ children }: { children: ReactNode }) {
@@ -133,6 +133,12 @@ export default async function Home({ searchParams }: HomeProps) {
           data. This does not change checkout or product pages.
         </p>
       </header>
+      {params.error ? (
+        <section className="bd-banner is-bad" role="alert">
+          <p className="bd-kicker">Action failed</p>
+          <p>{params.error}</p>
+        </section>
+      ) : null}
       <DashboardForm
         context={token}
         capability={capability.capability}
