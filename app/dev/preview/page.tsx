@@ -68,6 +68,21 @@ export default async function StorefrontPreviewPage({
 
   return (
     <>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `document.body.setAttribute("data-bc-blog-theme",${JSON.stringify(theme)});document.body.classList.toggle("bc-blog-post-page",${view === "post"});document.body.classList.toggle("bc-blog-list-page",${view !== "post"});`,
+        }}
+      />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin="anonymous"
+      />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      />
       <link rel="stylesheet" href={`/storefront/themes/${theme}.css`} />
       <Script src="/storefront/blog.js" strategy="afterInteractive" />
       <div className="sf-preview-root">
@@ -88,6 +103,13 @@ export default async function StorefrontPreviewPage({
         </nav>
         {view === "list" ? (
           <div className="page-content">
+            <ul className="breadcrumbs">
+              <li>
+                <Link href="/dev/preview">Home</Link>
+              </li>
+              <li>Blog</li>
+            </ul>
+            {/* Present so CSS hide can be verified — live Cornerstone also prints this */}
             <h1 className="page-heading">Blog</h1>
             <div className="bc-blog-list">
               {POSTS.map((post, index) => (
@@ -127,6 +149,29 @@ export default async function StorefrontPreviewPage({
                 </article>
               ))}
             </div>
+            <ul className="pagination bc-blog-pagination" aria-label="Pagination">
+              <li className="pagination-item">
+                <a href="#prev" aria-label="Previous">
+                  Prev
+                </a>
+              </li>
+              <li className="pagination-item pagination-item--current">
+                <a href="#1" aria-current="page">
+                  1
+                </a>
+              </li>
+              <li className="pagination-item">
+                <a href="#2">2</a>
+              </li>
+              <li className="pagination-item">
+                <a href="#3">3</a>
+              </li>
+              <li className="pagination-item">
+                <a href="#next" aria-label="Next">
+                  Next
+                </a>
+              </li>
+            </ul>
           </div>
         ) : (
           <div className="page-content">

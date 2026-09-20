@@ -1,8 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
-
 /*
   Counter — charcoal counter / dark retail floor
-  Critical: titles must beat Cornerstone grey link colors
+  Fonts load via Scripts API <link>, not @import (BC CSP blocks @import).
+  Titles must beat Cornerstone grey link colors.
 */
 body[data-bc-blog-theme="magazine"],
 body[data-bc-blog-theme="magazine"] .body,
@@ -14,8 +13,9 @@ body[data-bc-blog-theme="magazine"] .page-content {
   --bc-bg: #2e2e2e;
   --bc-surface: #3a3a3a;
   --bc-accent: #e31c23;
-  --bc-font: Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-    "proxima-nova", Arial, Helvetica, sans-serif;
+  --bc-font: Inter, system-ui, -apple-system, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "proxima-nova", Arial, Helvetica,
+    sans-serif;
   background: var(--bc-bg) !important;
   color: var(--bc-ink) !important;
   font-family: var(--bc-font) !important;
@@ -43,10 +43,13 @@ body[data-bc-blog-theme="magazine"].bc-blog-post-page .page-content--full {
 }
 
 body[data-bc-blog-theme="magazine"] .breadcrumbs {
-  margin: 0 0 16px !important;
+  display: block !important;
+  margin: 0 0 20px !important;
+  padding: 0 !important;
   font-size: 0.875rem !important;
   line-height: 1.45 !important;
   color: var(--bc-muted) !important;
+  text-align: left !important;
 }
 
 body[data-bc-blog-theme="magazine"] .breadcrumbs a,
@@ -62,16 +65,16 @@ body[data-bc-blog-theme="magazine"] .breadcrumbs a:hover {
   text-decoration: underline !important;
 }
 
-body[data-bc-blog-theme="magazine"] .page-heading,
-body[data-bc-blog-theme="magazine"] h1.page-heading {
-  margin: 0 0 8px !important;
-  color: #fff !important;
-  font-family: var(--bc-font) !important;
-  font-size: clamp(1.75rem, 3vw, 2.125rem) !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.03em !important;
-  text-align: left !important;
-  opacity: 1 !important;
+body[data-bc-blog-theme="magazine"]:not(.bc-blog-post-page) h1.page-heading,
+body[data-bc-blog-theme="magazine"]:not(.bc-blog-post-page) .page-heading,
+body[data-bc-blog-theme="magazine"].bc-blog-list-page h1.page-heading,
+body[data-bc-blog-theme="magazine"].bc-blog-list-page .page-heading {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
 }
 
 /*
@@ -524,18 +527,56 @@ body[data-bc-blog-theme="magazine"] .bc-blog-single .tag a {
   text-decoration: none !important;
 }
 
-body[data-bc-blog-theme="magazine"] .pagination {
-  display: flex;
+body[data-bc-blog-theme="magazine"] .pagination,
+body[data-bc-blog-theme="magazine"] .bc-blog-pagination,
+body[data-bc-blog-theme="magazine"] ul.pagination {
+  display: flex !important;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 16px;
-  padding: 20px 0 40px;
+  align-items: center;
+  gap: 8px;
+  list-style: none !important;
+  margin: 28px 0 48px !important;
+  padding: 0 !important;
+  width: 100%;
+  clear: both;
 }
 
-body[data-bc-blog-theme="magazine"] .pagination a {
+body[data-bc-blog-theme="magazine"] .pagination li,
+body[data-bc-blog-theme="magazine"] .pagination-item {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body[data-bc-blog-theme="magazine"] .pagination a,
+body[data-bc-blog-theme="magazine"] .pagination .pagination-link,
+body[data-bc-blog-theme="magazine"] .bc-blog-pagination a {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px !important;
+  border: 1px solid var(--bc-line) !important;
+  background: var(--bc-surface) !important;
   color: #fff !important;
+  font-size: 0.9rem !important;
   font-weight: 700 !important;
   text-decoration: none !important;
   opacity: 1 !important;
+}
+
+body[data-bc-blog-theme="magazine"] .pagination a:hover {
+  border-color: #fff !important;
+}
+
+body[data-bc-blog-theme="magazine"] .pagination-item--current a,
+body[data-bc-blog-theme="magazine"] .pagination .is-active a,
+body[data-bc-blog-theme="magazine"] .pagination [aria-current="page"] {
+  background: #fff !important;
+  border-color: #fff !important;
+  color: #1a1a1a !important;
 }
 
 @media (max-width: 640px) {

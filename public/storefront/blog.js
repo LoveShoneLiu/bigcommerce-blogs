@@ -16,6 +16,22 @@
     });
   }
 
+  function enhancePagination(list) {
+    var parent = list.parentNode;
+    if (!parent) return;
+
+    var candidates = parent.querySelectorAll(
+      ".pagination, nav.pagination, ul.pagination, .pagination-list, [data-pagination]",
+    );
+    Array.prototype.forEach.call(candidates, function (nav) {
+      // Keep pagination outside the card grid.
+      if (list.contains(nav)) {
+        parent.insertBefore(nav, list.nextSibling);
+      }
+      nav.classList.add("bc-blog-pagination");
+    });
+  }
+
   function enhance() {
     var body = document.body;
     if (!body || !body.getAttribute("data-bc-blog-theme")) {
@@ -48,6 +64,7 @@
 
     if (isPostPage) {
       body.classList.add("bc-blog-post-page");
+      body.classList.remove("bc-blog-list-page");
       var article = articles[0];
       article.classList.add("bc-blog-single", "bc-blog-card");
       var figure = article.querySelector(".blog-post-figure");
@@ -60,6 +77,9 @@
       moveShareToEnd(article);
       return;
     }
+
+    body.classList.add("bc-blog-list-page");
+    body.classList.remove("bc-blog-post-page");
 
     if (!document.querySelector(".bc-blog-list")) {
       var list = document.createElement("div");
@@ -79,6 +99,9 @@
         }
         list.appendChild(article);
       });
+      enhancePagination(list);
+    } else {
+      enhancePagination(document.querySelector(".bc-blog-list"));
     }
   }
 

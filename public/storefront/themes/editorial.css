@@ -1,9 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
-
 /*
   Showroom — studio grey product floor
-  List: featured (copy | photo) + 2-col cards
-  Post: title → framed hero → reading column
+  Fonts load via Scripts API <link>, not @import (BC CSP blocks @import).
 */
 body[data-bc-blog-theme="editorial"],
 body[data-bc-blog-theme="editorial"] .body,
@@ -15,8 +12,9 @@ body[data-bc-blog-theme="editorial"] .page-content {
   --bc-bg: #f0f0f0;
   --bc-surface: #ffffff;
   --bc-accent: #c4161c;
-  --bc-font: Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-    "proxima-nova", Arial, Helvetica, sans-serif;
+  --bc-font: Inter, system-ui, -apple-system, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "proxima-nova", Arial, Helvetica,
+    sans-serif;
   background: var(--bc-bg) !important;
   color: var(--bc-ink) !important;
   font-family: var(--bc-font) !important;
@@ -44,10 +42,13 @@ body[data-bc-blog-theme="editorial"].bc-blog-post-page .page-content--full {
 }
 
 body[data-bc-blog-theme="editorial"] .breadcrumbs {
-  margin: 0 0 16px !important;
+  display: block !important;
+  margin: 0 0 20px !important;
+  padding: 0 !important;
   font-size: 0.875rem !important;
   line-height: 1.4 !important;
   color: var(--bc-muted) !important;
+  text-align: left !important;
 }
 
 body[data-bc-blog-theme="editorial"] .breadcrumbs a {
@@ -60,16 +61,17 @@ body[data-bc-blog-theme="editorial"] .breadcrumbs a:hover {
   text-decoration: underline !important;
 }
 
-body[data-bc-blog-theme="editorial"] .page-heading,
-body[data-bc-blog-theme="editorial"] h1.page-heading {
-  margin: 0 0 8px !important;
-  color: var(--bc-ink) !important;
-  font-family: var(--bc-font) !important;
-  font-size: clamp(1.75rem, 3vw, 2.125rem) !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.03em !important;
-  line-height: 1.15 !important;
-  text-align: left !important;
+/* Hide Cornerstone list title "Blog" — nav already says Blog */
+body[data-bc-blog-theme="editorial"]:not(.bc-blog-post-page) h1.page-heading,
+body[data-bc-blog-theme="editorial"]:not(.bc-blog-post-page) .page-heading,
+body[data-bc-blog-theme="editorial"].bc-blog-list-page h1.page-heading,
+body[data-bc-blog-theme="editorial"].bc-blog-list-page .page-heading {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
 }
 
 /* Force title/link contrast (Cornerstone link greys) */
@@ -444,17 +446,57 @@ body[data-bc-blog-theme="editorial"] .bc-blog-single .tag a {
   text-decoration: none !important;
 }
 
-body[data-bc-blog-theme="editorial"] .pagination {
-  display: flex;
+body[data-bc-blog-theme="editorial"] .pagination,
+body[data-bc-blog-theme="editorial"] .bc-blog-pagination,
+body[data-bc-blog-theme="editorial"] ul.pagination {
+  display: flex !important;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 16px;
-  padding: 20px 0 40px;
+  align-items: center;
+  gap: 8px;
+  list-style: none !important;
+  margin: 28px 0 48px !important;
+  padding: 0 !important;
+  width: 100%;
+  clear: both;
 }
 
-body[data-bc-blog-theme="editorial"] .pagination a {
+body[data-bc-blog-theme="editorial"] .pagination li,
+body[data-bc-blog-theme="editorial"] .pagination-item {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body[data-bc-blog-theme="editorial"] .pagination a,
+body[data-bc-blog-theme="editorial"] .pagination .pagination-link,
+body[data-bc-blog-theme="editorial"] .bc-blog-pagination a {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px !important;
+  border: 1px solid var(--bc-line) !important;
+  background: var(--bc-surface) !important;
   color: var(--bc-ink) !important;
+  font-size: 0.9rem !important;
   font-weight: 700 !important;
   text-decoration: none !important;
+  opacity: 1 !important;
+}
+
+body[data-bc-blog-theme="editorial"] .pagination a:hover,
+body[data-bc-blog-theme="editorial"] .bc-blog-pagination a:hover {
+  border-color: var(--bc-ink) !important;
+}
+
+body[data-bc-blog-theme="editorial"] .pagination-item--current a,
+body[data-bc-blog-theme="editorial"] .pagination .is-active a,
+body[data-bc-blog-theme="editorial"] .pagination [aria-current="page"] {
+  background: var(--bc-ink) !important;
+  border-color: var(--bc-ink) !important;
+  color: #fff !important;
 }
 
 @media (max-width: 640px) {
